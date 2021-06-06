@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2021 at 03:34 PM
+-- Generation Time: Jun 06, 2021 at 08:03 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.16
 
@@ -67,7 +67,7 @@ INSERT INTO `akun` (`id`, `kode_akun`, `nama_akun`, `created_at`, `updated_at`) 
 (25, 6172, 'Baban telepon', '2021-05-29 05:55:42', '2021-05-29 05:55:42'),
 (26, 6173, 'Beban wifi', '2021-05-29 05:57:00', '2021-05-29 05:57:00'),
 (27, 6180, 'Beban gaji karyawan', '2021-05-29 05:57:20', '2021-05-29 05:57:20'),
-(28, 6181, 'Biaya bonnus karyawan', '2021-05-29 05:57:46', '2021-05-29 05:57:46'),
+(28, 6181, 'Biaya bonus karyawan', '2021-05-29 05:57:46', '2021-06-06 01:43:22'),
 (29, 6190, 'Biaya lain-lain', '2021-05-29 05:58:01', '2021-05-29 05:58:01');
 
 -- --------------------------------------------------------
@@ -102,7 +102,6 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2021_05_29_092616_create_akun_table', 1),
@@ -146,7 +145,14 @@ INSERT INTO `transaksi` (`id`, `id_user`, `kode_akun`, `tanggal_transaksi`, `jen
 (7, 1, 1150, '2021-05-28', 'debit', 1000000, '2021-06-03 13:34:48', '2021-06-03 13:34:48'),
 (8, 1, 1120, '2021-05-31', 'debit', 500000, '2021-06-03 13:35:30', '2021-06-03 13:35:30'),
 (10, 1, 1240, '2021-05-11', 'debit', 750000, '2021-06-03 14:28:43', '2021-06-04 13:22:45'),
-(11, 1, 1150, '2021-05-04', 'debit', 57500000, '2021-06-03 14:29:35', '2021-06-04 13:25:29');
+(14, 1, 1110, '2021-06-05', 'debit', 500000, '2021-06-06 02:25:28', '2021-06-06 02:25:28'),
+(15, 1, 4110, '2021-06-10', 'kredit', 10000000, '2021-06-06 02:38:51', '2021-06-06 02:38:51'),
+(16, 1, 6170, '2021-06-08', 'debit', 123000, '2021-06-06 02:40:05', '2021-06-06 02:40:05'),
+(17, 1, 6173, '2021-06-12', 'debit', 630000, '2021-06-06 02:40:28', '2021-06-06 02:40:28'),
+(18, 1, 4210, '2021-06-23', 'kredit', 5000000, '2021-06-06 02:53:34', '2021-06-06 02:53:34'),
+(19, 1, 4110, '2021-06-29', 'kredit', 7000000, '2021-06-06 02:56:21', '2021-06-06 02:56:21'),
+(20, 1, 6170, '2021-05-20', 'debit', 150000, '2021-06-06 03:18:33', '2021-06-06 03:18:33'),
+(21, 4, 1110, '2021-05-20', 'kredit', 3400000, '2021-06-06 05:48:03', '2021-06-06 05:48:03');
 
 -- --------------------------------------------------------
 
@@ -158,6 +164,8 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'assets/images/user_blank.png',
+  `no_karyawan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -170,9 +178,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@mail.com', NULL, '$2y$10$bQVGQs1m8Rod0JOmBZNB.eHStZwqrFDcJYXyIFYRQusy7.aRS/rKq', 'karyawan', NULL, '2021-05-29 03:08:53', '2021-05-29 03:08:53'),
-(2, 'owner', 'owner@mail.com', NULL, '$2y$10$bQVGQs1m8Rod0JOmBZNB.eHStZwqrFDcJYXyIFYRQusy7.aRS/rKq', 'owner', NULL, '2021-06-04 11:44:27', '2021-06-04 11:44:27');
+INSERT INTO `users` (`id`, `name`, `email`, `foto`, `no_karyawan`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
+(2, 'owner', 'owner@mail.com', 'assets/images/user_blank.png', '', NULL, '$2y$10$bQVGQs1m8Rod0JOmBZNB.eHStZwqrFDcJYXyIFYRQusy7.aRS/rKq', 'owner', NULL, '2021-06-04 11:44:27', '2021-06-04 11:44:27'),
+(4, 'witsuu', 'witsuu@mail.com', 'assets/profiles/1622955656_user_blank.png', '12345678', NULL, '$2y$10$9VYUK1d5M97CUdl6l1W/uepM1YEJoL4thRf617IMfHsxGOIBi6pny', 'karyawan', NULL, '2021-06-06 05:00:56', '2021-06-06 05:21:29');
 
 --
 -- Indexes for dumped tables
@@ -241,13 +249,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
