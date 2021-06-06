@@ -8,6 +8,7 @@ use App\Transaksi;
 use Auth;
 use DB;
 use Carbon\Carbon;
+use PDF;
 
 class HomeController extends Controller
 {
@@ -17,46 +18,36 @@ class HomeController extends Controller
 
     public function dashboard(){
         $page = "dashboard";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
-        return view('dashboard',compact('page','role'));
-    }
-
-    public function users(){
-        $page="user";
-        $role = Auth::user()->role;
-        if ($role !="owner") {
-            redirect()->route('dashboard');
-        }
-
-        return view('pages.users',compact('page','role'));
+        return view('dashboard',compact('page','user'));
     }
 
     public function dataAkun(){
         $page="data_akun";
-        $role = Auth::user()->role;
-        if($role == "owner"){
+        $user = Auth::user();
+        if($user->role == "owner"){
             return redirect()->route('dashboard');
         }
 
         $akuns = Akun::all();
 
-        return view('pages.data_akun',compact('page','akuns','role'));
+        return view('pages.data_akun',compact('page','akuns','user'));
     }
 
     public function tambahDataAkun(){
         $page="data_akun";
-        $role = Auth::user()->role;
-        if($role == "owner"){
+        $user = Auth::user();
+        if($user->role == "owner"){
             return redirect()->route('dashboard');
         }
 
-        return view("pages.tambah_data_akun", compact('page','role'));
+        return view("pages.tambah_data_akun", compact('page','user'));
     }
 
     public function storeDataAkun(Request $req){
-        $role = Auth::user()->role;
-        if($role == "owner"){
+        $user = Auth::user();
+        if($user->role == "owner"){
             return redirect()->route('dashboard');
         }
 
@@ -77,7 +68,7 @@ class HomeController extends Controller
 
         $akun->save();
 
-        return redirect()->route('data_akun')->with('edited',`Akun berhasil diubah`);
+        return redirect()->route('data_akun')->with('success',`Akun berhasil diubah`);
     }
 
     public function deleteDataAkun(Request $req){
@@ -91,40 +82,40 @@ class HomeController extends Controller
 
     public function jurnalUmumMain(){
         $page="jurnal_umum";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $jurnals = Transaksi::getTransaksiByMonthAndYear();
 
-        return view('pages.jurnal_umum_main', compact('page','jurnals','role'));
+        return view('pages.jurnal_umum_main', compact('page','jurnals','user'));
     }
 
     public function jurnalUmum(Request $req){
         $page="jurnal_umum";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $bulan = $req->bulan;
         $tahun = $req->tahun;
 
         $details = Transaksi::getJurnalJoinAkunDetail($bulan,$tahun);
 
-        return view('pages.jurnal_umum', compact("page",'details','role'));
+        return view('pages.jurnal_umum', compact("page",'details','user'));
     }
 
     public function tambahJurnalUmum(){
         $page="jurnal_umum";
-        $role = Auth::user()->role;
-        if($role == "owner"){
+        $user = Auth::user();
+        if($user->role == "owner"){
             return redirect()->route('dashboard');
         }
 
         $akuns = Akun::all();
 
-        return view('pages.tambah_jurnal_umum', compact('page','akuns','role'));
+        return view('pages.tambah_jurnal_umum', compact('page','akuns','user'));
     }
 
     public function storeJurnalUmum(Request $req){
-        $role = Auth::user()->role;
-        if($role == "owner"){
+        $user = Auth::user();
+        if($user->role == "owner"){
             return redirect()->route('dashboard');
         }
 
@@ -142,11 +133,11 @@ class HomeController extends Controller
     public function editJurnalUmumPage(Request $req){
         $page="jurnal_umum";
         $id = $req->id;
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $transaksi = Transaksi::find($id);
 
-        return view('pages.edit_jurnal_umum',compact('page','role','transaksi'));
+        return view('pages.edit_jurnal_umum',compact('page','user','transaksi'));
     }
 
     public function editJurnalUmum(Request $req){
@@ -159,7 +150,7 @@ class HomeController extends Controller
 
         $transaksi->save();
 
-        return redirect()->route('jurnal_umum_main')->with('updated',`Transaksi berhasil diubah`);
+        return redirect()->route('jurnal_umum_main')->with('success',`Transaksi berhasil diubah`);
     }
 
     public function deleteJurnalUmum(Request $req){
@@ -173,16 +164,16 @@ class HomeController extends Controller
 
     public function bukuBesarMain(){
         $page="buku_besar";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $transaksiByMonthAndYear = Transaksi::getTransaksiByMonthAndYear();
 
-        return view('pages.buku_besar_main', compact('page','transaksiByMonthAndYear','role'));
+        return view('pages.buku_besar_main', compact('page','transaksiByMonthAndYear','user'));
     }
 
     public function bukuBesar(Request $req){
         $page="buku_besar";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $bulan = $req->bulan;
         $tahun = $req->tahun;
@@ -190,21 +181,21 @@ class HomeController extends Controller
         $details = Transaksi::getJurnalJoinAkunDetail($bulan,$tahun);
         $akuns = Akun::getAkunByMonthAndYear($bulan,$tahun);
 
-        return view('pages.buku_besar', compact('page','details','akuns','role'));
+        return view('pages.buku_besar', compact('page','details','akuns','user'));
     }
 
     public function neracaMain(){
         $page="neraca";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $transaksiByMonthAndYear = Transaksi::getTransaksiByMonthAndYear();
 
-        return view('pages.neraca_main', compact('page','transaksiByMonthAndYear','role'));
+        return view('pages.neraca_main', compact('page','transaksiByMonthAndYear','user'));
     }
 
     public function neraca(Request $req){
         $page="neraca";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $bulan = $req->bulan;
         $tahun = $req->tahun;
@@ -212,15 +203,29 @@ class HomeController extends Controller
         $details = Transaksi::getJurnalJoinAkunDetail($bulan,$tahun);
         $akuns = Akun::getAkunByMonthAndYear($bulan,$tahun);
 
-        return view('pages.neraca', compact('page','details','akuns','role'));
+        return view('pages.neraca', compact('page','details','akuns','user'));
     }
 
     public function Laporan(){
         $page="laporan";
-        $role = Auth::user()->role;
+        $user = Auth::user();
 
         $transaksiByMonthAndYear = Transaksi::getTransaksiByMonthAndYear();
 
-        return view('pages.laporan', compact('page','transaksiByMonthAndYear','role'));
+        return view('pages.laporan', compact('page','transaksiByMonthAndYear','user'));
+    }
+
+    public function cetakLaporan(Request $req){
+        $bulan = $req->bulan;
+        $tahun = $req->tahun;
+        $fullDate = $req->full_date;
+
+        $transaksis = Transaksi::getJurnalJoinAkunDetail($bulan,$tahun);
+        $akunPendapatan = Akun::whereBetween('kode_akun',[4000,4500])->get();
+        $akunBiaya = Akun::whereBetween('kode_akun',[6100,6200])->get();
+
+        $pdf = PDF::loadView('pages.cetak_laporan',compact('akunPendapatan','akunBiaya','transaksis','bulan','tahun','fullDate'));
+        return $pdf->download('laporan'.$bulan.' '.$tahun.'.pdf');
+        // return view('pages.cetak_laporan',compact('akunPendapatan','akunBiaya','transaksis','bulan','tahun','fullDate'));
     }
 }

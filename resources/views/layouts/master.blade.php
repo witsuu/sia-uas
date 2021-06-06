@@ -31,7 +31,7 @@
         <div class="navbar-nav navbar-rigth dropdown">
             <div class=" d-flex align-items-center text-white mr-5" data-toggle="dropdown">
                 <i class="fas fa-user mr-2"></i>
-                <span>Username</span>
+                <span>{{__($user->email)}}</span>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -50,6 +50,11 @@
         <aside class="sidebar-wrapper">
             <div class="sidebar-brand">SIA</div>
             <div class="sidebar-brand sidebar-brand-sm">S</div>
+            <div class="d-flex flex-column align-items-center m-3">
+                <img src="{{ asset($user->foto) }}" alt="user" width="70" class="rounded-circle">
+                <h4 class="mb-0">{{__($user->name)}}</h4>
+                <small class="text-muted">{{__($user->role)}}</small>
+            </div>
             <ul class="sidebar-menu">
                 <li class="nav-item @if($page=='dashboard') show @endif">
                     <a href="{{ route("dashboard")}}">
@@ -57,42 +62,42 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                @if ($role!="owner")
+                @if ($user->role != "owner")
                 <li class="nav-item @if($page=='data_akun') show @endif">
                     <a href="{{ route('data_akun') }}">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-file-invoice"></i>
                         <span>Data Akun</span>
                     </a>
                 </li>
                 @else
                 <li class="nav-item @if($page=='user') show @endif">
-                    <a href="{{ route('users') }}">
-                        <i class="fas fa-home"></i>
+                    <a href="{{ route('karyawan') }}">
+                        <i class="fas fa-user"></i>
                         <span>Data Karyawan</span>
                     </a>
                 </li>
                 @endif
                 <li class="nav-item @if($page=='jurnal_umum') show @endif">
                     <a href="{{ route('jurnal_umum_main') }}">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-book"></i>
                         <span>Jurnal Umum</span>
                     </a>
                 </li>
                 <li class="nav-item @if($page=='buku_besar') show @endif">
                     <a href="{{ route('buku_besar_main') }}">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-book"></i>
                         <span>Buku Besar</span>
                     </a>
                 </li>
                 <li class="nav-item @if($page=='neraca') show @endif">
                     <a href="{{ route('neraca_main') }}">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-balance-scale"></i>
                         <span>Neraca</span>
                     </a>
                 </li>
                 <li class="nav-item @if($page=='laporan') show @endif">
                     <a href="{{ route('laporan') }}">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-print"></i>
                         <span>Laporan Laba Rugi</span>
                     </a>
                 </li>

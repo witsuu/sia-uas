@@ -14,7 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', "HomeController@dashboard")->name("dashboard");
-Route::get('/karyawan','HomeController@users')->name('users');
+Route::get('karyawan','OwnerController@karyawan')->name('karyawan');
+Route::get('karyawan/create','OwnerController@tambahKaryawan')->name('tambah_karyawan');
+Route::post('karyawan/create','OwnerController@storeKaryawan')->name('store_karyawan');
+Route::get('karyawan/edit/{id}','OwnerController@editKaryawan')->name('edit_karyawan');
+Route::put('karyawan/edit','OwnerController@storeEditKaryawan')->name('store_edit_karyawan');
+Route::delete('karyawan/delete','OwnerController@deleteKaryawan')->name('delete_karyawan');
 Route::get('data-akun','HomeController@dataAkun')->name('data_akun');
 Route::get('data-akun/create','HomeController@tambahDataAkun')->name('tambah_data_akun');
 Route::post('data-akun/create','HomeController@storeDataAkun')->name('store_data_akun');
@@ -32,5 +37,6 @@ Route::post('buku-besar/detail','HomeController@bukuBesar')->name('buku_besar');
 Route::get('neraca','HomeController@neracaMain')->name('neraca_main');
 Route::post('neraca/detail','HomeController@neraca')->name('neraca');
 Route::get('laporan','HomeController@laporan')->name('laporan');
+Route::post('laporan/cetak','HomeController@cetakLaporan')->name('cetak_laporan');
 
 Auth::routes();

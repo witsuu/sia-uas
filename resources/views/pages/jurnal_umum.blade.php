@@ -17,24 +17,36 @@
                     <th>Kode</th>
                     <th>Debit</th>
                     <th>Kredit</th>
-                    @if ($role != "owner")
+                    @if ($user->role != "owner")
                     <th>Aksi</th>
                     @endif
                 </tr>
             </thead>
             <tbody>
+                @php
+                $totalDebit = 0;
+                $totalKredit=0;
+                $debit=0;
+                $kredit=0;
+                @endphp
                 @foreach ($details as $transaksi)
                 <tr>
                     <td>{{__(Carbon\Carbon::parse($transaksi->tanggal_transaksi)->isoFormat('DD MMMM Y'))}}</td>
                     <td>{{__($transaksi->nama_akun)}}</td>
                     <td>{{__($transaksi->kode_akun)}}</td>
                     <td>@if ($transaksi->jenis_saldo == "debit")
-                        {{__($transaksi->saldo)}}
+                        {{__('Rp. '.number_format($transaksi->saldo,0,',',','))}}
+                        @php
+                        $totalDebit+=$transaksi->saldo;
+                        @endphp
                         @endif</td>
                     <td>@if ($transaksi->jenis_saldo=='kredit')
-                        {{__($transaksi->saldo)}}
+                        {{__('Rp. '.number_format($transaksi->saldo,0,',',','))}}
+                        @php
+                        $totalKredit+=$transaksi->saldo;
+                        @endphp
                         @endif</td>
-                    @if ($role != "owner")
+                    @if ($user->role != "owner")
                     <td class="d-flex">
                         <form action="{{ route('edit_jurnal_umum') }}" method="post" class="mr-2">
                             @csrf
@@ -47,6 +59,31 @@
                     @endif
                 </tr>
                 @endforeach
+                @if ($totalDebit != abs($totalKredit))
+                <tr>
+                    <td class="text-center" colspan="3"><b>Total</b></td>
+                    <td class="text-danger"><?= 'Rp. '.number_format($totalDebit,0,',','.') ?></td>
+                    <td class="text-danger"><?= 'Rp. '.number_format(abs($totalKredit),0,',','.') ?></td>
+                    @if ($user->role != "owner")
+                    <td></td>
+                    @endif
+                </tr>
+                <tr class="bg-danger text-center">
+                    <td colspan="6" class="text-white" style="font-weight:bolder;font-size:19px">TIDAK SEIMBANG</td>
+                </tr>
+                @else
+                <tr>
+                    <td class="text-center" colspan="3"><b>Total</b></td>
+                    <td class="text-success"><?= 'Rp. '.number_format($totalDebit,0,',','.') ?></td>
+                    <td class="text-success"><?= 'Rp. '.number_format(abs($totalKredit),0,',','.') ?></td>
+                    @if ($user->role != "owner")
+                    <td></td>
+                    @endif
+                </tr>
+                <tr class="bg-success text-center">
+                    <td colspan="6" class="text-white" style="font-weight:bolder;font-size:19px">SEIMBANG</td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>

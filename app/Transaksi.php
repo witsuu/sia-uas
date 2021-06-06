@@ -18,6 +18,7 @@ class Transaksi extends Model
         ->select('tanggal_transaksi')
         ->groupBy(DB::raw('YEAR(tanggal_transaksi)'))
         ->groupBy(DB::raw('MONTH(tanggal_transaksi)'))
+        ->orderBy('tanggal_transaksi','desc')
         ->get();
     }
 

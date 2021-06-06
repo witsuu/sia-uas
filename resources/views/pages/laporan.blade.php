@@ -26,10 +26,13 @@
                     <td>{!!$no!!}</td>
                     <td>{{__(Carbon\Carbon::parse($transaksi->tanggal_transaksi)->isoFormat('MMMM Y'))}}</td>
                     <td>
-                        <form action="{{ route('buku_besar') }}" method="post">
+                        <form action="{{ route('cetak_laporan') }}" method="post">
                             @csrf
-                            <input type="text" hidden name="bulan" value="bulan">
-                            <input type="text" hidden name="tahun" value="tahun">
+                            <input type="text" value="{{__($transaksi->tanggal_transaksi)}}" name="full_date" hidden>
+                            <input type="text" hidden name="bulan"
+                                value="{{__(Carbon\Carbon::parse($transaksi->tanggal_transaksi)->isoFormat('MM'))}}">
+                            <input type="text" hidden name="tahun"
+                                value="{{__(Carbon\Carbon::parse($transaksi->tanggal_transaksi)->isoFormat('Y'))}}">
                             <button type="submit" class="btn btn-success">Cetak Laporan</button>
                         </form>
                     </td>

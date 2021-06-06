@@ -33,7 +33,7 @@
 
 </script>
 <div class="card">
-    @if ($role!="owner")
+    @if ($user->role!="owner")
     <div class="card-header text-right">
         <a href="{{ route('tambah_jurnal_umum') }}">
             <button class="btn btn-primary">Tambah Jurnal</button>
